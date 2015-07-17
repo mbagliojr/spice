@@ -10,6 +10,10 @@ public abstract class SugarRecordItem extends SugarRecord {
         return SugarRecordItem.class.isAssignableFrom(aClass);
     }
 
+    public void setId(Long id) {
+        super.setId(id);
+    }
+
 //    @Ignore
 //    private boolean fromCache;
 //

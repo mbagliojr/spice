@@ -1,3 +1,5 @@
+sugarOrm
+*.iml
 .gradle
 local.properties
 .idea

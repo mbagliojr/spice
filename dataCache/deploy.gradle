@@ -1,0 +1,93 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+version = "1.0.0"
+
+def isReleaseBuild() {
+    !version.contains("SNAPSHOT")
+}
+
+def sonatypeRepositoryUrl
+
+if (isReleaseBuild()) {
+    println "RELEASE BUILD $version"
+    sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+} else {
+    println "DEBUG BUILD $version"
+    sonatypeRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+}
+
+def username = project.hasProperty("nexusUsername") ? project.property("nexusUsername") : ""
+def password = project.hasProperty("nexusPassword") ? project.property("nexusPassword") : ""
+
+afterEvaluate { project ->
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { deployment -> signing.signPom(deployment) }
+
+                repository(url: sonatypeRepositoryUrl) {
+                    authentication(userName: username, password: password)
+                }
+
+                pom.project {
+                    name 'DataCache'
+                    packaging 'aar'
+                    artifactId 'datacache'
+                    groupId 'com.emmbi.mobile'
+                    url 'https://github.com/frankiesardo/LinearListView'
+                    description 'Android library that allows you to bind a LinearLayout with a ListAdapter'
+                    inceptionYear '2015'
+
+                    scm {
+                        url 'https://github.com/mbag102/DataCache'
+                        connection 'scm:git:git://github.com/mbag102/DataCache.git'
+                        developerConnection 'scm:git@github.com:mbag102/DataCache.git'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'mbag102'
+                            name 'Mike Baglio Jr.'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    signing {
+        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+
+    task androidJavadocs(type: Javadoc) {
+        source = android.sourceSets.main.allJava
+    }
+
+    task androidJavadocsJar(type: Jar) {
+        classifier = 'javadoc'
+        //basename = artifact_id
+        from androidJavadocs.destinationDir
+    }
+
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        //basename = artifact_id
+        from android.sourceSets.main.allSource
+    }
+
+    artifacts {
+        //archives packageReleaseJar
+        archives androidSourcesJar
+        archives androidJavadocsJar
+    }
+}

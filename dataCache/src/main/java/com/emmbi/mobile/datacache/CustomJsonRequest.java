@@ -49,7 +49,7 @@ public class CustomJsonRequest<T> extends Request<T> {
      * @param type Relevant class object, for Gson's reflection
      * @param headers Map of request headers
      */
-    public CustomJsonRequest(int requestMethod, String url, Object params, Type type, Class<T> clazz, Map<String, String> headers,
+    public CustomJsonRequest(int requestMethod, String url, Object params, Type type, Class<T> clazz, Map<String, String> headers, boolean unWrap,
                              Listener<T> listener, ErrorListener errorListener) {
 
         super(requestMethod, url, errorListener);
@@ -58,10 +58,7 @@ public class CustomJsonRequest<T> extends Request<T> {
         this.clazz = clazz;
         this.listener = listener;
         this.gson = BaseApi.getGsonInstance();
-
-        if(requestMethod != Method.GET) {
-            unWrap = true;
-        }
+        this.unWrap = unWrap;
 
         if(headers == null) {
             this.headers = new HashMap<String, String>();
@@ -80,7 +77,7 @@ public class CustomJsonRequest<T> extends Request<T> {
 
     public CustomJsonRequest(int requestMethod, String url, Object params, Type type, Class<T> clazz,
                              Listener<T> listener, ErrorListener errorListener) {
-        this(requestMethod, url, params, type, clazz, null,
+        this(requestMethod, url, params, type, clazz, null, false,
                 listener, errorListener);
     }
 

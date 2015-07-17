@@ -6,9 +6,12 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.emmbi.mobile.datacache.model.SugarRecordItem;
+import com.orm.SugarRecord;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,7 +67,8 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
                             if(listItem == null) continue;
 
                             if(SugarRecordItem.isSugarEntity(listItem.getClass())) {
-                                //((SugarRecord) listItem).save();
+
+                                SugarRecordItem.save(listItem);
                                 cascadeChildren(listItem);
                             }
                         }
@@ -74,7 +78,7 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 } catch (IllegalArgumentException e) {
-                    Log.e("ERROR", method.getName() + " " + e.getStackTrace().toString());
+                    Log.e("ERROR", method.getName() + " " + e.getMessage());
                 }
             }
         }
@@ -91,7 +95,7 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
             public void onResponse(T response) {
 
                 if(SugarRecordItem.isSugarEntity(response.getClass())) {
-                    //((SugarRecordItem) response).save();
+                    ((SugarRecordItem) response).save();
 
                     cascadeChildren(response);
                 }

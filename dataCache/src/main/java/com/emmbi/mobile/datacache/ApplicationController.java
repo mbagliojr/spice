@@ -19,7 +19,7 @@ public class ApplicationController extends SugarApp {
     /**
      * Log or request TAG
      */
-    public static final String TAG = "JsonCacher";
+    public static final String TAG = "DataCache";
 
     /**
      * Global request queue for Volley

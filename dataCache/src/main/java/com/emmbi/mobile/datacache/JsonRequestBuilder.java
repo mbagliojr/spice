@@ -85,7 +85,7 @@ public final class JsonRequestBuilder<T> {
 
     public CustomJsonRequest<T> build() {
 
-        CustomJsonRequest<T> jsonRequest = new CustomJsonRequest<T>(requestMethod, url, postObject, type, clazz, headers,
+        CustomJsonRequest<T> jsonRequest = new CustomJsonRequest<T>(requestMethod, url, postObject, type, clazz, headers, unWrap,
                 listener, errorListener);
 
         return jsonRequest;
