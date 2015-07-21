@@ -1,4 +1,4 @@
-package com.emmbi.mobile.datacache;
+package com.emmbi.mobile.datacache.json;
 
 import com.android.volley.Response;
 

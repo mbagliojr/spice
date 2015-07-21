@@ -20,6 +20,78 @@ if (isReleaseBuild()) {
 def username = project.hasProperty("nexusUsername") ? project.property("nexusUsername") : ""
 def password = project.hasProperty("nexusPassword") ? project.property("nexusPassword") : ""
 
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.source
+}
+
+task androidJavadocsJar(type: Jar) {
+    classifier = 'javadoc'
+    //basename = artifact_id
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    //basename = artifact_id
+    from android.sourceSets.main.java.source
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
+}
+
+signing {
+    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+//
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+//
+//        repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+//            authentication(userName: sonatypeUsername, password: sonatypePassword)
+//        }
+//
+//        snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
+//            authentication(userName: sonatypeUsername, password: sonatypePassword)
+//        }
+//
+//        pom {
+//            project {
+//                name 'RoundedImageView'
+//                packaging 'aar'
+//
+//                description 'Fast ImageView with support for rounded corners and borders'
+//                url 'https://github.com/vinc3m1/RoundedImageView'
+//
+//                scm {
+//                    url 'scm:git@github.com:vinc3m1/RoundedImageView.git'
+//                    connection 'scm:git@github.com:vinc3m1/RoundedImageView.git'
+//                    developerConnection 'scm:git@github.com:vinc3m1/RoundedImageView.git'
+//                }
+//
+//                licenses {
+//                    license {
+//                        name 'The Apache Software License, Version 2.0'
+//                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                        distribution 'repo'
+//                    }
+//                }
+//
+//                developers {
+//                    developer {
+//                        id 'vinc3m1'
+//                        name 'Vince Mi'
+//                        email 'vince@makeramen.com'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+
 afterEvaluate { project ->
     uploadArchives {
         repositories {
@@ -35,8 +107,8 @@ afterEvaluate { project ->
                     packaging 'aar'
                     artifactId 'datacache'
                     groupId 'com.emmbi.mobile'
-                    url 'https://github.com/frankiesardo/LinearListView'
-                    description 'Android library that allows you to bind a LinearLayout with a ListAdapter'
+                    url 'https://github.com/mbag102/DataCache'
+                    description 'Android library that allows you to bind a view to a database using sugarORM'
                     inceptionYear '2015'
 
                     scm {
@@ -64,30 +136,30 @@ afterEvaluate { project ->
         }
     }
 
-    signing {
-        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
-        sign configurations.archives
-    }
+//    signing {
+//        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+//        sign configurations.archives
+//    }
 
-    task androidJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.allJava
-    }
-
-    task androidJavadocsJar(type: Jar) {
-        classifier = 'javadoc'
-        //basename = artifact_id
-        from androidJavadocs.destinationDir
-    }
-
-    task androidSourcesJar(type: Jar) {
-        classifier = 'sources'
-        //basename = artifact_id
-        from android.sourceSets.main.allSource
-    }
-
-    artifacts {
-        //archives packageReleaseJar
-        archives androidSourcesJar
-        archives androidJavadocsJar
-    }
+//    task androidJavadocs(type: Javadoc) {
+//        source = android.sourceSets.main.java
+//    }
+//
+//    task androidJavadocsJar(type: Jar) {
+//        classifier = 'javadoc'
+//        //basename = artifact_id
+//        from androidJavadocs.destinationDir
+//    }
+//
+//    task androidSourcesJar(type: Jar) {
+//        classifier = 'sources'
+//        //basename = artifact_id
+//        from android.sourceSets.main.java
+//    }
+//
+//    artifacts {
+//        //archives packageReleaseJar
+//        archives androidSourcesJar
+//        archives androidJavadocsJar
+//    }
 }

@@ -1,4 +1,4 @@
-package com.emmbi.mobile.datacache;
+package com.emmbi.mobile.datacache.json;
 
 import android.util.Log;
 
@@ -11,6 +11,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.emmbi.mobile.datacache.BaseApi;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
