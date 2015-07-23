@@ -53,7 +53,7 @@ public abstract class CacheRequestCallback<T extends SugarRecordObject> extends 
             public void onResponse(T response) {
 
                 response.save();
-                CacheCascader.saveCascadeChildren(response, ignoreMethods);
+                //CacheCascader.saveCascadeChildren(response, ignoreMethods);
 
                 fetchFromCacheAndUpdateUI();
 //        else if(SugarRecordList.class.isAssignableFrom(response.getClass())) {

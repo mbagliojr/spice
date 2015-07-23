@@ -2,10 +2,6 @@ package com.emmbi.mobile.datacache.cache;
 
 import android.util.Log;
 
-import com.emmbi.mobile.datacache.annotations.ManyToMany;
-import com.emmbi.mobile.datacache.annotations.ManyToOne;
-import com.emmbi.mobile.datacache.annotations.OneToMany;
-import com.emmbi.mobile.datacache.annotations.OneToOne;
 import com.emmbi.mobile.datacache.model.SugarRecordObject;
 
 import java.lang.annotation.Annotation;
@@ -19,7 +15,7 @@ import java.util.List;
  * Created by mbagliojr on 7/17/15.
  */
 public class CacheCascader {
-
+/*
     public static void saveCascadeChildren(SugarRecordObject object, List<String> ignoreFields) {
 
         Class objClass= object.getClass();
@@ -70,7 +66,7 @@ public class CacheCascader {
                         } else if (annotation.annotationType() == ManyToMany.class) {
 
                             //TODO
-                            String joinTableClassName = ((ManyToMany)annotation).joinTableClassName();
+                            String joinTableClassName = ((ManyToMany)annotation).joinTable();
 
                             break;
                         }
@@ -91,7 +87,7 @@ public class CacheCascader {
 
                     for (Annotation annotation : annotations) {
                         if (annotation.annotationType() == ManyToOne.class) {
-                            String childFieldName = ((ManyToOne)annotation).childFieldName();
+                            String childFieldName = ((ManyToOne)annotation).name();
                             try {
                                 Field setChildField = objClass.getField(childFieldName);
                                 setChildField.setAccessible(true);
@@ -104,7 +100,7 @@ public class CacheCascader {
                         //Make it one-directional, recursion will add bidirectional if necessary
                         } else if (annotation.annotationType() == OneToOne.class) {
 
-                            String childFieldName = ((OneToOne)annotation).childFieldName();
+                            String childFieldName = ((OneToOne)annotation).name();
                             try {
                                 Field setChildField = objClass.getField(childFieldName);
                                 setChildField.setAccessible(true);
