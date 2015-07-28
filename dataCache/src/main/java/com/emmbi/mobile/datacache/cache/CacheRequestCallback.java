@@ -5,16 +5,17 @@ import android.content.Context;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.emmbi.mobile.datacache.json.RequestCallback;
-import com.emmbi.mobile.datacache.model.SugarRecordObject;
+import com.orm.SugarRecord;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
 /**
  * Created by mbagliojr on 4/14/15.
  */
-public abstract class CacheRequestCallback<T extends SugarRecordObject> extends RequestCallback<T> {
+public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
 
     private List<String> ignoreMethods = new ArrayList<String>();
 
@@ -52,7 +53,20 @@ public abstract class CacheRequestCallback<T extends SugarRecordObject> extends 
             @Override
             public void onResponse(T response) {
 
-                response.save();
+                if(response != null) {
+                    if (SugarRecord.isSugarEntity(response.getClass())) {
+                        ((SugarRecord) response).save();
+                    } else if (Collection.class.isAssignableFrom(response.getClass())) {
+
+                        Collection collection = (Collection) response;
+
+                        for (Object object : collection) {
+                            if (SugarRecord.isSugarEntity(object.getClass())) {
+                                ((SugarRecord) object).save();
+                            }
+                        }
+                    }
+                }
                 //CacheCascader.saveCascadeChildren(response, ignoreMethods);
 
                 fetchFromCacheAndUpdateUI();

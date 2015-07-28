@@ -1,43 +1,48 @@
 package com.emmbi.mobile.datacache.cache;
 
 import com.emmbi.mobile.datacache.json.RequestCallback;
-import com.emmbi.mobile.datacache.model.SugarRecordObject;
+import com.orm.SugarRecord;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by mbagliojr on 7/17/15.
  */
-public class DefaultCacheFetcher<T extends SugarRecordObject> implements CacheFetcher<T> {
+public class DefaultCacheFetcher<T> implements CacheFetcher<T> {
 
-    private Class<? extends SugarRecordObject> sugarRecordItemClass;
+    private Class<? extends SugarRecord> sugarRecordItemClass;
     private Long id;
-    private String sortColumn;
-    private Integer pageSize;
-    private Integer pageNum;
 
-//    public DefaultCacheFetcher(Class<? extends SugarRecordObject> sugarRecordItemClass, Long id, String sortColumn, Integer pageSize, Integer pageNum) {
-//        this.sugarRecordItemClass = sugarRecordItemClass;
-//        this.id = id;
-//        this.sortColumn = sortColumn;
-//        this.pageSize = pageSize;
-//        this.pageNum = pageNum;
-//    }
-
-    public DefaultCacheFetcher(Class<? extends SugarRecordObject> sugarRecordItemClass, Long id) {
+    public DefaultCacheFetcher(Class<? extends SugarRecord> sugarRecordItemClass, Long id) {
         this.sugarRecordItemClass = sugarRecordItemClass;
         this.id = id;
-        this.sortColumn = sortColumn;
-        this.pageSize = pageSize;
-        this.pageNum = pageNum;
+    }
+
+    public DefaultCacheFetcher(Class<? extends SugarRecord> sugarRecordItemClass) {
+        this.sugarRecordItemClass = sugarRecordItemClass;
     }
 
     @Override
     public T fetchFromCache(RequestCallback<T> callback) {
 
-//        Integer limit = pageSize;
-//        limit *= pageNum == null ? 1: pageNum;
+        //If there is no id, T has to be a List or this won't work
+        if(id == null) {
+            Iterator<T> iterator = (Iterator<T>) SugarRecord.findAll(sugarRecordItemClass);
 
-        T sugarRecord = (T) SugarRecordObject.findById(sugarRecordItemClass, id);
+            T sugarRecordObjects = (T) new ArrayList<>();
 
-        return sugarRecord;
+            while(iterator != null && iterator.hasNext()) {
+                ((List) sugarRecordObjects).add(iterator.next());
+            }
+
+            return sugarRecordObjects;
+        } else {
+
+            T sugarRecord = (T) SugarRecord.findById(sugarRecordItemClass, id);
+
+            return sugarRecord;
+        }
     }
 }

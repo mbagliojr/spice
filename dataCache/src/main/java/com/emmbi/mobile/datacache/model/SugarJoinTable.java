@@ -1,9 +1,11 @@
 package com.emmbi.mobile.datacache.model;
 
+import com.orm.SugarRecord;
+
 /**
  * Created by mbagliojr on 7/20/15.
  */
-public class SugarJoinTable extends SugarRecordObject {
+public class SugarJoinTable extends SugarRecord {
 
     //private
 

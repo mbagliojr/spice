@@ -2,8 +2,6 @@ package com.emmbi.mobile.datacache.cache;
 
 import android.util.Log;
 
-import com.emmbi.mobile.datacache.model.SugarRecordObject;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
