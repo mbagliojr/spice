@@ -1,5 +1,7 @@
 package com.emmbi.mobile.datacache.cache;
 
+import android.app.Activity;
+
 import com.emmbi.mobile.datacache.json.RequestCallback;
 
 /**
@@ -7,5 +9,5 @@ import com.emmbi.mobile.datacache.json.RequestCallback;
  */
 public interface CacheFetcher<T> {
 
-    T fetchFromCache(RequestCallback<T> callback);
+    void fetchFromCache(RequestCallback<T> callback, Activity activity);
 }

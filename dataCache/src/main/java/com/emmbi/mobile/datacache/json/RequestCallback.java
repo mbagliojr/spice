@@ -1,5 +1,6 @@
 package com.emmbi.mobile.datacache.json;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.android.volley.Response;
@@ -11,10 +12,8 @@ import com.android.volley.VolleyLog;
  */
 public abstract class RequestCallback<T> {
 
-    private Context mContext;
+    public RequestCallback() {
 
-    public RequestCallback(Context context) {
-        mContext = context;
     }
 
     public void updateUI(T response) {
@@ -25,17 +24,17 @@ public abstract class RequestCallback<T> {
     public void onServerFailure(VolleyError error) {
         VolleyLog.e("Error: ", error.getMessage());
 
-        /*if(error.networkResponse.statusCode == 401 && mContext != null) {
+        /*if(error.networkResponse.statusCode == 401 && mActivity != null) {
 
-            PreferenceUtil.putString(mContext, PreferenceKeys.LOGIN_USERNAME, null);
-            PreferenceUtil.putString(mContext, PreferenceKeys.LOGIN_PASSWORD, null);
-            PreferenceUtil.putString(mContext, PreferenceKeys.LOGIN_SUBDOMAIN, null);
+            PreferenceUtil.putString(mActivity, PreferenceKeys.LOGIN_USERNAME, null);
+            PreferenceUtil.putString(mActivity, PreferenceKeys.LOGIN_PASSWORD, null);
+            PreferenceUtil.putString(mActivity, PreferenceKeys.LOGIN_SUBDOMAIN, null);
 
-            Intent launchSignup = new Intent(mContext, LoginActivity.class);
-            mContext.startActivity(launchSignup);
+            Intent launchSignup = new Intent(mActivity, LoginActivity.class);
+            mActivity.startActivity(launchSignup);
 
-            if(mContext instanceof Activity) {
-                ((Activity) mContext).finish();
+            if(mActivity instanceof Activity) {
+                ((Activity) mActivity).finish();
             }
         }*/
     }

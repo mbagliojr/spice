@@ -1,5 +1,8 @@
 package com.emmbi.mobile.datacache.cache;
 
+import android.app.Activity;
+import android.content.Context;
+
 import com.emmbi.mobile.datacache.json.RequestCallback;
 import com.orm.SugarRecord;
 
@@ -21,28 +24,47 @@ public class DefaultCacheFetcher<T> implements CacheFetcher<T> {
     }
 
     public DefaultCacheFetcher(Class<? extends SugarRecord> sugarRecordItemClass) {
-        this.sugarRecordItemClass = sugarRecordItemClass;
+        this(sugarRecordItemClass, null);
     }
 
     @Override
-    public T fetchFromCache(RequestCallback<T> callback) {
+    public void fetchFromCache(final RequestCallback<T> callback, final Activity activity) {
 
-        //If there is no id, T has to be a List or this won't work
-        if(id == null) {
-            Iterator<T> iterator = (Iterator<T>) SugarRecord.findAll(sugarRecordItemClass);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //If there is no id, T has to be a List or this won't work
+                if(id == null) {
+                    Iterator<T> iterator = (Iterator<T>) SugarRecord.findAll(sugarRecordItemClass);
 
-            T sugarRecordObjects = (T) new ArrayList<>();
+                    final T sugarRecordObjects = (T) new ArrayList<>();
 
-            while(iterator != null && iterator.hasNext()) {
-                ((List) sugarRecordObjects).add(iterator.next());
+                    while(iterator != null && iterator.hasNext()) {
+                        ((List) sugarRecordObjects).add(iterator.next());
+                    }
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.updateUI(sugarRecordObjects);
+                        }
+                    });
+
+
+                } else {
+
+                    final T sugarRecord = (T) SugarRecord.findById(sugarRecordItemClass, id);
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.updateUI(sugarRecord);
+                        }
+                    });
+                }
             }
+        }) ;
 
-            return sugarRecordObjects;
-        } else {
-
-            T sugarRecord = (T) SugarRecord.findById(sugarRecordItemClass, id);
-
-            return sugarRecord;
-        }
+        thread.start();
     }
 }

@@ -1,6 +1,6 @@
 package com.emmbi.mobile.datacache.cache;
 
-import android.content.Context;
+import android.app.Activity;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,12 +18,13 @@ import java.util.List;
 public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
 
     private List<String> ignoreMethods = new ArrayList<String>();
-
+    private Activity activity;
     private CacheFetcher<T> cacheFetcher;
 
-    public CacheRequestCallback(CacheFetcher<T> cacheFetcher, Context context) {
-        super(context);
+    public CacheRequestCallback(CacheFetcher<T> cacheFetcher, Activity activity) {
+        super();
 
+        this.activity = activity;
         this.cacheFetcher = cacheFetcher;
         ignoreMethods.add("isSugarEntity");
     }
@@ -36,8 +37,7 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
     public void fetchFromCacheAndUpdateUI() {
         if(cacheFetcher != null) {
             try {
-                T response = cacheFetcher.fetchFromCache(this);
-                updateUI(response);
+                cacheFetcher.fetchFromCache(this, activity);
             } catch (Exception e) {
             }
         }
