@@ -1,1 +1,1 @@
-include ':app', ':dataCache', ':sugarOrm'
+include ':app', ':spice', ':sugarOrm'
