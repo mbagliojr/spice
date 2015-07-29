@@ -1,5 +1,5 @@
 # Spice
-This is an Android library that allows a similar experience to the iOS NSFetchedResultsController. It leverages Volley and GSON for REST requests and SugarORM for data (cache) persistence and retrieval.
+This is an Android library that allows a similar experience to the iOS NSFetchedResultsController. It leverages Volley and GSON for REST requests and subsequent JSON parsing. It then integrates with your favorite ORM (SugarORM by default) for data (cache) persistence and retrieval. This is ideal for any application looking to do server calls and have a local database for offline viewing of the app.
 
 ## Usage Instructions: 
 - copy spice-{version}.jar and sugar-{version}.jar from the ./spice/libs folder into your libs folder
