@@ -9,6 +9,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.Volley;
 import com.orm.SugarApp;
+import com.orm.SugarContext;
 
 /**
  * Created by mbagliojr on 3/16/15.
@@ -19,7 +20,7 @@ public class ApplicationController extends SugarApp {
     /**
      * Log or request TAG
      */
-    public static final String TAG = "DataCache";
+    public static final String TAG = "Spice";
 
     /**
      * Global request queue for Volley
@@ -100,5 +101,9 @@ public class ApplicationController extends SugarApp {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
+    }
+
+    public void clearDb() {
+        SugarContext.getSugarContext().clearDb();
     }
 }
