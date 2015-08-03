@@ -27,7 +27,7 @@ public class DefaultCacheFetcher<T> implements CacheFetcher<T> {
     }
 
     @Override
-    public void fetchFromCache(final RequestCallback<T> callback, final Activity activity) {
+    public void fetchFromCache(final CacheRequestCallback<T> callback, final Activity activity) {
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -45,7 +45,7 @@ public class DefaultCacheFetcher<T> implements CacheFetcher<T> {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            callback.updateUI(sugarRecordObjects);
+                            callback.updateUI(sugarRecordObjects, true);
                         }
                     });
 
@@ -57,7 +57,7 @@ public class DefaultCacheFetcher<T> implements CacheFetcher<T> {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            callback.updateUI(sugarRecord);
+                            callback.updateUI(sugarRecord, true);
                         }
                     });
                 }

@@ -1,6 +1,7 @@
 package com.emmbi.mobile.spice.cache;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,9 +30,8 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
         ignoreMethods.add("isSugarEntity");
     }
 
-    public void updateUI(T response) {
-        super.updateUI(response);
-
+    public void updateUI(T response, boolean fromCache) {
+        updateUI(response);
     }
 
     public void fetchFromCacheAndUpdateUI() {
@@ -51,38 +51,39 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
     public Response.Listener<T> getSuccessListener() {
         return new Response.Listener<T>() {
             @Override
-            public void onResponse(T response) {
+            public void onResponse(final T response) {
 
-                if(response != null) {
-                    if (SugarRecord.isSugarEntity(response.getClass())) {
-                        ((SugarRecord) response).save();
-                    } else if (Collection.class.isAssignableFrom(response.getClass())) {
+                AsyncTask<String, String, String> saveTask = new AsyncTask<String, String, String>() {
+                    @Override
+                    protected String doInBackground(String... params) {
+                        if(response != null) {
+                            if (SugarRecord.isSugarEntity(response.getClass())) {
+                                ((SugarRecord) response).save();
+                            } else if (Collection.class.isAssignableFrom(response.getClass())) {
 
-                        Collection collection = (Collection) response;
+                                Collection collection = (Collection) response;
 
-                        for (Object object : collection) {
-                            if (SugarRecord.isSugarEntity(object.getClass())) {
-                                ((SugarRecord) object).save();
+                                for (Object object : collection) {
+                                    if (SugarRecord.isSugarEntity(object.getClass())) {
+                                        ((SugarRecord) object).save();
+                                    }
+                                }
                             }
                         }
+                        return "success";
                     }
-                }
-                //CacheCascader.saveCascadeChildren(response, ignoreMethods);
 
-                fetchFromCacheAndUpdateUI();
-//        else if(SugarRecordList.class.isAssignableFrom(response.getClass())) {
-//            SugarRecordList sugarRecordList = (SugarRecordList) response;
-//
-//            if(sugarRecordList.getRecords() != null) {
-//                for (Object object : sugarRecordList.getRecords()) {
-//                    if(SugarRecord.class.isAssignableFrom(object.getClass())) {
-//                        ((SugarRecord) object).save();
-//                    }
-//                }
-//            }
-//        }
+                    @Override
+                    protected void onPostExecute(String result) {
+                        super.onPostExecute(result);
+
+                        fetchFromCacheAndUpdateUI();
+                    }
+                };
+
+                saveTask.execute();
+
             }
         };
     }
-
 }

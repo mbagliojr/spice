@@ -9,5 +9,5 @@ import com.emmbi.mobile.spice.json.RequestCallback;
  */
 public interface CacheFetcher<T> {
 
-    void fetchFromCache(RequestCallback<T> callback, Activity activity);
+    void fetchFromCache(CacheRequestCallback<T> callback, Activity activity);
 }
