@@ -33,7 +33,10 @@ public class BaseApi {
 
         if(callback instanceof CacheRequestCallback) {
             ((CacheRequestCallback) callback).fetchFromCacheAndUpdateUI();
+            ApplicationController.getInstance().cancelPendingRequests("CACHE");
+            ApplicationController.getInstance().addToRequestQueue(req, "CACHE");
+        } else {
+            ApplicationController.getInstance().addToRequestQueue(req);
         }
-        ApplicationController.getInstance().addToRequestQueue(req);
     }
 }

@@ -99,7 +99,17 @@ public class ApplicationController extends SugarApp {
      */
     public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
+            if(tag == null) {
+                mRequestQueue.cancelAll(TAG);
+            } else {
+                mRequestQueue.cancelAll(tag);
+            }
+        }
+    }
+
+    public void cancelAllPendingRequests() {
+        if (mRequestQueue != null) {
+            mRequestQueue.cancelAll(TAG);
         }
     }
 
