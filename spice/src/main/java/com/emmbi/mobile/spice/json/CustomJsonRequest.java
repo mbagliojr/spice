@@ -31,6 +31,7 @@ public class CustomJsonRequest<T> extends Request<T> {
     private final Map<String, String> headers;
     public final Listener<T> listener;
     private final Object postObject;
+    private JsonParsingStrategy<T> jsonParsingStrategy;
 
     private boolean unWrap = false;
 
@@ -50,7 +51,8 @@ public class CustomJsonRequest<T> extends Request<T> {
      * @param type Relevant class object, for Gson's reflection
      * @param headers Map of request headers
      */
-    public CustomJsonRequest(int requestMethod, String url, Object params, Type type, Class<T> clazz, Map<String, String> headers, boolean unWrap,
+    public CustomJsonRequest(int requestMethod, String url, Object params, Type type, Class<T> clazz, Map<String, String> headers,
+                             boolean unWrap, JsonParsingStrategy<T> jsonParsingStrategy,
                              Listener<T> listener, ErrorListener errorListener) {
 
         super(requestMethod, url, errorListener);
@@ -60,6 +62,7 @@ public class CustomJsonRequest<T> extends Request<T> {
         this.listener = listener;
         this.gson = BaseApi.getGsonInstance();
         this.unWrap = unWrap;
+        this.jsonParsingStrategy = jsonParsingStrategy;
 
         if(headers == null) {
             this.headers = new HashMap<String, String>();
@@ -78,7 +81,7 @@ public class CustomJsonRequest<T> extends Request<T> {
 
     public CustomJsonRequest(int requestMethod, String url, Object params, Type type, Class<T> clazz,
                              Listener<T> listener, ErrorListener errorListener) {
-        this(requestMethod, url, params, type, clazz, null, false,
+        this(requestMethod, url, params, type, clazz, null, false, null,
                 listener, errorListener);
     }
 
@@ -137,6 +140,11 @@ public class CustomJsonRequest<T> extends Request<T> {
                     response.data, HttpHeaderParser.parseCharset(response.headers));
 
             Log.v("JSON", json);
+
+            if(jsonParsingStrategy != null) {
+                T parsedResponse = jsonParsingStrategy.parseJson(json);
+                return Response.success(parsedResponse, HttpHeaderParser.parseCacheHeaders(response));
+            }
 
             if((clazz == null || clazz == String.class) && type == null) {
                 return Response.success(null,HttpHeaderParser.parseCacheHeaders(response));

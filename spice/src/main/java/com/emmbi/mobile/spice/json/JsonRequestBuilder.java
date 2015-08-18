@@ -18,6 +18,7 @@ public final class JsonRequestBuilder<T> {
     private Response.ErrorListener errorListener;
     private Object postObject;
     private int requestMethod;
+    private JsonParsingStrategy<T> jsonParsingStrategy;
 
     private boolean unWrap = false;
 
@@ -83,10 +84,15 @@ public final class JsonRequestBuilder<T> {
         return this;
     }
 
+    public JsonRequestBuilder<T> setJsonParsingStrategy(JsonParsingStrategy<T> jsonParsingStrategy) {
+        this.jsonParsingStrategy = jsonParsingStrategy;
+        return this;
+    }
+
     public CustomJsonRequest<T> build() {
 
-        CustomJsonRequest<T> jsonRequest = new CustomJsonRequest<T>(requestMethod, url, postObject, type, clazz, headers, unWrap,
-                listener, errorListener);
+        CustomJsonRequest<T> jsonRequest = new CustomJsonRequest<T>(requestMethod, url, postObject, type, clazz, headers,
+                unWrap, jsonParsingStrategy,listener, errorListener);
 
         return jsonRequest;
     }
