@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.emmbi.mobile.example" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="com.emmbi.mobile.spice.ApplicationController"
         android:allowBackup="true"
@@ -9,10 +11,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.emmbi.mobile.example.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".activities.CommentsActivity"
+            android:label="@string/title_activity_comments" >
+        </activity>
     </application>
-
 
 </manifest>
