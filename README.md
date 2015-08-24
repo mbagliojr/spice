@@ -6,7 +6,7 @@ This is an Android library that allows a similar experience to the iOS NSFetched
 - To view the library source, look at the spice directory
 
 ## Usage Instructions: 
-- copy spice-{version}.jar and sugar-{version}.jar from the ./spice/libs folder into your libs folder
+- copy ./spice-{version}.jar and ./sugar-{version}.jar into your libs folder
 - add the following dependencies to your <b>build.gradle</b>:
   
 <code>compile 'com.mcxiaoke.volley:library:1.0.+@aar'</code>
