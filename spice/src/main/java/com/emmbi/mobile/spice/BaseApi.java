@@ -1,5 +1,6 @@
 package com.emmbi.mobile.spice;
 
+import com.android.volley.Request;
 import com.emmbi.mobile.spice.cache.CacheRequestCallback;
 import com.emmbi.mobile.spice.json.CustomJsonRequest;
 import com.emmbi.mobile.spice.json.RequestCallback;
@@ -29,7 +30,7 @@ public class BaseApi {
         return gson;
     }
 
-    protected static <T> void addToRequestQueue(CustomJsonRequest<T> req, RequestCallback callback) {
+    protected static <T> void addToRequestQueue(Request<T> req, RequestCallback callback) {
 
         if(callback instanceof CacheRequestCallback) {
             ((CacheRequestCallback) callback).fetchFromCacheAndUpdateUI();
