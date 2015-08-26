@@ -6,7 +6,7 @@ This is an Android library that allows a similar experience to the iOS NSFetched
 - To view the library source, look at the spice directory
 
 ## Usage Instructions: 
-- copy spice-{version}.jar and sugar-{version}.jar from the ./spice/libs folder into your libs folder
+- copy <b>spice-{version}.jar</b> and <b>sugar-{version}.jar</b> from top level folder into your libs folder
 - add the following dependencies to your <b>build.gradle</b>:
   
 <code>compile 'com.mcxiaoke.volley:library:1.0.+@aar'</code>
@@ -14,3 +14,8 @@ This is an Android library that allows a similar experience to the iOS NSFetched
 <code>compile 'com.google.code.gson:gson:2.3'</code>
 
 <code>compile 'com.google.guava:guava:18.0'</code>
+
+<code>compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+    compile('org.apache.httpcomponents:httpmime:4.3') {
+        exclude module: "httpclient"
+    }</code>
