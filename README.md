@@ -14,3 +14,8 @@ This is an Android library that allows a similar experience to the iOS NSFetched
 <code>compile 'com.google.code.gson:gson:2.3'</code>
 
 <code>compile 'com.google.guava:guava:18.0'</code>
+
+<code>compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+    compile('org.apache.httpcomponents:httpmime:4.3') {
+        exclude module: "httpclient"
+    }</code>
