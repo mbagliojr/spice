@@ -48,7 +48,7 @@ public class DefaultCacheFetcher<T> implements CacheFetcher<T> {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                callback.updateUI(sugarRecordObjects, true);
+                                callback.updateUI(sugarRecordObjects, callback.isFromCache());
                             }
                         });
 
@@ -60,7 +60,7 @@ public class DefaultCacheFetcher<T> implements CacheFetcher<T> {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                callback.updateUI(sugarRecord, true);
+                                callback.updateUI(sugarRecord, callback.isFromCache());
                             }
                         });
                     }
