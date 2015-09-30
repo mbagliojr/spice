@@ -17,6 +17,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
 }
 
 dependencies {
@@ -32,5 +37,5 @@ dependencies {
     }
     
     //copy spice jar and place it in libs directory in your case
-    compile project(':spice')
+    //compile project(':spice')
 }

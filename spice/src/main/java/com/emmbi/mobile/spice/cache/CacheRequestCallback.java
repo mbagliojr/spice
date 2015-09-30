@@ -22,6 +22,7 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
     private Activity activity;
     private CacheFetcher<T> cacheFetcher;
     private boolean saveToCache;
+    private volatile boolean fromCache = true;
 
     /**
      *
@@ -95,6 +96,7 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
                         protected void onPostExecute(String result) {
                             super.onPostExecute(result);
 
+                            fromCache = false;
                             fetchFromCacheAndUpdateUI();
                         }
                     };
@@ -103,10 +105,15 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
 
                 } else {
                     if(activity != null) {
+                        fromCache = false;
                         updateUI(response, false);
                     }
                 }
             }
         };
+    }
+
+    boolean isFromCache() {
+        return fromCache;
     }
 }
