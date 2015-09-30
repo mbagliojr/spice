@@ -102,7 +102,9 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
                     saveTask.execute();
 
                 } else {
-                    updateUI(response, false);
+                    if(activity != null) {
+                        updateUI(response, false);
+                    }
                 }
             }
         };

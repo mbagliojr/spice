@@ -45,24 +45,28 @@ public class DefaultCacheFetcher<T> implements CacheFetcher<T> {
                             ((List) sugarRecordObjects).add(iterator.next());
                         }
 
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.updateUI(sugarRecordObjects, true);
-                            }
-                        });
+                        if(activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.updateUI(sugarRecordObjects, true);
+                                }
+                            });
+                        }
 
 
                     } else {
 
                         final T sugarRecord = (T) SugarRecord.findById(sugarRecordItemClass, id);
 
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.updateUI(sugarRecord, true);
-                            }
-                        });
+                        if(activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.updateUI(sugarRecord, true);
+                                }
+                            });
+                        }
                     }
                 } catch (Exception e) {
                     Log.e("Spice", e.getMessage());
