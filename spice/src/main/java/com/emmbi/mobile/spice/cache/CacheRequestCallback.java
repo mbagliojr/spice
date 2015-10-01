@@ -113,7 +113,7 @@ public abstract class CacheRequestCallback<T> extends RequestCallback<T> {
         };
     }
 
-    boolean isFromCache() {
+    public boolean isFromCache() {
         return fromCache;
     }
 }

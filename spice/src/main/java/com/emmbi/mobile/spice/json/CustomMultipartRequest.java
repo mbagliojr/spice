@@ -52,14 +52,8 @@ public class CustomMultipartRequest<T> extends Request<T> {
     private static final String FILE_PART_NAME = "attachment";
     private static final String STRING_PART_NAME = "text";
 
-
-    /** Default charset for JSON request. */
-    //TODO This is declared in two places. Where do we want it. The Request or the API?
-    protected static final String PROTOCOL_CHARSET = "utf-8";
-
     /** Content type for request. */
-    private static final String PROTOCOL_CONTENT_TYPE =
-            String.format("application/json");
+    private static final String PROTOCOL_CONTENT_TYPE = "multipart/form-data";
 
 
     public CustomMultipartRequest(int requestMethod, String url, Map<String, String> params, Type type, Map<String, String> headers, byte[] byteArray, Class<T> clazz, boolean unWrap,
@@ -77,11 +71,10 @@ public class CustomMultipartRequest<T> extends Request<T> {
 
         if(headers == null) {
             this.headers = new HashMap<String, String>();
+            this.headers.put("Content-type", PROTOCOL_CONTENT_TYPE);
         } else {
             this.headers = headers;
         }
-
-        this.headers.put("Content-type", PROTOCOL_CONTENT_TYPE);
 
         buildMultipartEntity();
 
@@ -109,12 +102,6 @@ public class CustomMultipartRequest<T> extends Request<T> {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-
-//        if(SessionAttributes.ACCESS_TOKEN != null) {
-//            String creds = String.format("%s:%s", SessionAttributes.ACCESS_TOKEN, SessionAttributes.ACCESS_TOKEN);
-//            String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
-//            headers.put("Authorization", auth);
-//        }
         return headers;
     }
 

@@ -24,7 +24,7 @@ public final class MultipartRequestBuilder<T> {
     private boolean unWrap = false;
 
     /** Default charset for JSON request. */
-    protected String PROTOCOL_CHARSET = "utf-8";
+    protected String PROTOCOL_CHARSET = "multipart/form-data";
 
     /** Content type for request. */
     private String PROTOCOL_CONTENT_TYPE =
