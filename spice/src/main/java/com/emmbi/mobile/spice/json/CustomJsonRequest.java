@@ -52,7 +52,7 @@ public class CustomJsonRequest<T> extends Request<T> {
      * @param headers Map of request headers
      */
     public CustomJsonRequest(int requestMethod, String url, Object params, Type type, Class<T> clazz, Map<String, String> headers,
-                             boolean unWrap, JsonParsingStrategy<T> jsonParsingStrategy,
+                             boolean unWrap, JsonParsingStrategy<T> jsonParsingStrategy, Gson gson,
                              Listener<T> listener, ErrorListener errorListener) {
 
         super(requestMethod, url, errorListener);
@@ -60,7 +60,11 @@ public class CustomJsonRequest<T> extends Request<T> {
         this.type = type;
         this.clazz = clazz;
         this.listener = listener;
-        this.gson = BaseApi.getGsonInstance();
+        if(gson == null) {
+            this.gson = BaseApi.getGsonInstance();
+        } else {
+            this.gson = gson;
+        }
         this.unWrap = unWrap;
         this.jsonParsingStrategy = jsonParsingStrategy;
 
@@ -81,7 +85,7 @@ public class CustomJsonRequest<T> extends Request<T> {
 
     public CustomJsonRequest(int requestMethod, String url, Object params, Type type, Class<T> clazz,
                              Listener<T> listener, ErrorListener errorListener) {
-        this(requestMethod, url, params, type, clazz, null, false, null,
+        this(requestMethod, url, params, type, clazz, null, false, null, null,
                 listener, errorListener);
     }
 
@@ -125,7 +129,7 @@ public class CustomJsonRequest<T> extends Request<T> {
 
     @Override
     public String getBodyContentType() {
-        return PROTOCOL_CONTENT_TYPE;
+        return headers.get("Content-type");
     }
 
     @Override

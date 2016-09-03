@@ -1,12 +1,15 @@
 package com.emmbi.mobile.spice;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.http.AndroidHttpClient;
 import android.text.TextUtils;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.Volley;
 import com.orm.SugarApp;
 import com.orm.SugarContext;
@@ -54,7 +57,14 @@ public class ApplicationController extends SugarApp {
         // lazy initialize the request queue, the queue instance will be
         // created when it is accessed for the first time
         if (mRequestQueue == null) {
-            mRequestQueue = Volley.newRequestQueue(getApplicationContext(), new HurlStack());
+            String userAgent = "volley/0";
+            try {
+                String packageName = getPackageName();
+                PackageInfo info = getPackageManager().getPackageInfo(packageName, 0);
+                userAgent = packageName + "/" + info.versionCode;
+            } catch (PackageManager.NameNotFoundException e) {}
+            HttpStack httpStack = new HttpClientStack(AndroidHttpClient.newInstance(userAgent));
+            mRequestQueue = Volley.newRequestQueue(getApplicationContext(), httpStack);
         }
 
         return mRequestQueue;

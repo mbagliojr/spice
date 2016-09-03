@@ -1,6 +1,7 @@
 package com.emmbi.mobile.spice.json;
 
 import com.android.volley.Response;
+import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -13,6 +14,7 @@ public final class JsonRequestBuilder<T> {
     private String url;
     private Class<T> clazz;
     private Type type;
+    private Gson gson;
     private Map<String, String> headers;
     private Response.Listener<T> listener;
     private Response.ErrorListener errorListener;
@@ -89,10 +91,15 @@ public final class JsonRequestBuilder<T> {
         return this;
     }
 
+    public JsonRequestBuilder<T> setGson(Gson gson) {
+        this.gson = gson;
+        return this;
+    }
+
     public CustomJsonRequest<T> build() {
 
         CustomJsonRequest<T> jsonRequest = new CustomJsonRequest<T>(requestMethod, url, postObject, type, clazz, headers,
-                unWrap, jsonParsingStrategy,listener, errorListener);
+                unWrap, jsonParsingStrategy, gson, listener, errorListener);
 
         return jsonRequest;
     }
